@@ -46,6 +46,7 @@ public class JWTTokenStoreServiceImpl implements JWTTokenStoreService {
             jwtTokenStore.setExpiryDate(expiryDate);
             jwtTokenStoreRepository.save(jwtTokenStore);
             saveToken = true;
+            localTokenStore.put(optionalAccount.get().getEmail(), jwtTokenStore.getToken());
         }
         return saveToken;
     }

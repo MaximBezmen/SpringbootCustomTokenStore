@@ -7,6 +7,7 @@ import com.spring.SpringbootCustomTokenStore.repository.JWTTokenStoreRepository;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -19,15 +20,13 @@ import static com.spring.SpringbootCustomTokenStore.security.SecurityConstants.S
 public class JWTTokenStoreServiceImpl implements JWTTokenStoreService {
     private final AccountRepository accountRepository;
     private final JWTTokenStoreRepository jwtTokenStoreRepository;
-    private volatile ConcurrentHashMap<String, String> localTokenStore;
+    private ConcurrentHashMap<String, String> localTokenStore;
 
     public JWTTokenStoreServiceImpl(AccountRepository accountRepository, JWTTokenStoreRepository jwtTokenStoreRepository) {
         this.accountRepository = accountRepository;
         this.jwtTokenStoreRepository = jwtTokenStoreRepository;
-        downlandTokenFromDB();
-
     }
-
+    @PostConstruct
     private void downlandTokenFromDB() {
         List<JWTTokenStore> jwtTokenStoreList = jwtTokenStoreRepository.findAll();
         localTokenStore = new ConcurrentHashMap<>();

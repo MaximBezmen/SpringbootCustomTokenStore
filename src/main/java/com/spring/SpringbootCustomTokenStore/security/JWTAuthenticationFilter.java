@@ -78,6 +78,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
+        jwtTokenStoreService.revokeToken(userPrincipal.getEmail());
         jwtTokenStoreService.saveToken(token, userPrincipal.getId(), expiryDate);
         return token;
     }
